@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -Eeuxo pipefail
+PROJECT_NAME=
+
+if [[ ! -d .container_home_dir ]]; then
+    mkdir -p .container_home_dir
+fi
+
+touch .container_home_dir/.bash_history
+
+docker build --tag ${PROJECT_NAME} .
+
+docker run -it --rm \
+    -v $(pwd):/workdir \
+    -v $(pwd)/.container_home_dir:/home/user/.bash_history \
+    -w /workdir \
+    --name ${PROJECT_NAME} ${PROJECT_NAME}
